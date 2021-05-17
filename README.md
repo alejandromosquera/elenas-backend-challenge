@@ -24,3 +24,11 @@ run app:
 
 run tests:
     python manage.py test
+
+* Los usuarios se deben autenticar   DONE
+* Las tareas son privadas. Solo las puede administrar su dueño DONE
+* Los usuarios pueden agregar, editar, eliminar y marcar como completa/incompleta las tareas DONE
+* El listado de tareas debe ser paginado DONE
+* Agregar validaciones, como no aceptar tareas sin descripción, etc DONE
+* Buscar por descripción DONE
+* Escribe test unitarios en el primer commit DONE
