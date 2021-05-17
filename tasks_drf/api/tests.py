@@ -71,6 +71,15 @@ class TasksModelTests(TestCase):
         
         assert response.status_code == 500
     
+    def test_retrive_a_task_does_not_exist(self):       
+
+        user = User.objects.create_user('admin', 'admin')
+        client = APIClient()              
+        client.force_authenticate(user=user)
+        response = client.get(endpoint + '/tasks/15900', format='json')    
+        
+        assert response.status_code == 404
+    
     def test_retrieve_task_fron_another_user(self):       
 
         user1 = User.objects.create_user('user1', 'user1')

@@ -17,13 +17,14 @@ class TaskViewSet(viewsets.ViewSet):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
+    #Retrive a list of tasks. You can send the search query param, this will return results based on LIKE operator or you can skip this param to retrieve all
     def list(self, request):
         user = request.user   
-        search = request.GET['search']        
-        if not search:
-            queryset = Task.objects.filter(user_id=user.id).order_by('-created_at')            
+        if 'search' not in request.GET or not request.GET['search'].strip():
+            queryset = Task.objects.filter(user_id=user.id).order_by('-created_at')         
         else:
-            queryset = Task.objects.filter(user_id=user.id, description__icontains=search).order_by('-created_at')
+            queryset = Task.objects.filter(user_id=user.id, description__icontains=request.GET['search']).order_by('-created_at')  
+              
         paginator = PageNumberPagination()
         page = paginator.paginate_queryset(queryset, request)
         if page is not None:
@@ -33,6 +34,7 @@ class TaskViewSet(viewsets.ViewSet):
             serializer = TaskSerializer(queryset, many=True)
             return ApiResponse.Success(serializer.dat)         
     
+    #Retrieve one task 
     def retrieve(self, request, pk=None):
         # Validate owner
         user = request.user 
@@ -44,6 +46,7 @@ class TaskViewSet(viewsets.ViewSet):
         serializer = TaskSerializer(task)
         return Response(ApiResponse.Success(serializer.data))
     
+    #Create or save a task. You need set the param ID in order to update
     def create(self, request):  
 
         user = request.user 
@@ -80,6 +83,7 @@ class TaskViewSet(viewsets.ViewSet):
 
         return Response(ApiResponse.Success(serializer.data))
 
+    #Delete a task
     def delete(self, request, pk, format=None):
 
         # Validate owner
@@ -93,6 +97,7 @@ class TaskViewSet(viewsets.ViewSet):
         task.delete()
         return Response(ApiResponse.Success("Taks deleted successfully."))        
 
+    #Mark as completed a task
     @action(detail=True, methods=['post'])
     def mark_as_completed(self, request, pk=None):
         user = request.user 
