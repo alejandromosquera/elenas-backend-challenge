@@ -1,5 +1,5 @@
 The authentication mode is basic auth
-The solution contains the source and the Postman collection in order to test the api manually. Also yuo can see the test in test.py file in api app.
+The solution contains the source and the Postman collection in order to test the api manually. Also y0uo can see the tests in test.py file in api app.
 
 The next are the info required:
 
